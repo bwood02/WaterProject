@@ -1,0 +1,39 @@
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.page-title {
+  margin: 0 0 1.5rem;
+  font-size: 2rem;
+  color: #0f172a;
+  text-align: center;
+}
+
+.project-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.project-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.project-card h3 {
+  margin: 0 0 0.75rem;
+  color: #1e293b;
+}
+
+.project-card ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #334155;
+}
+
+.project-card li + li {
+  margin-top: 0.35rem;
+}
