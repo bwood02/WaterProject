@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import type { Project } from "./types/Project";
 
-function ProjectList() {
+function ProjectList({ selectedCategories }: { selectedCategories: string[] }) 
+// ProjectList receives the selectedCategories state as a prop from the App component; it uses this state to filter the projects
+{
     
     // array of projects (Project.ts) and a function to update the projects (setProjects) using the useState hook; initial value of projects is an empty array
     const [projects, setProjects] = useState<Project[]>([]); 
@@ -12,8 +14,13 @@ function ProjectList() {
 
     useEffect(() => { // useEffect fetches data when the page is built
         const fetchProjects = async () => {
-            const response = await fetch(`https://localhost:5000/water/allprojects?pageHowMany=${pageSize}&pageNumber=${pageNum}`); 
-                // fetch data from the backend API endpoint, with parameters for pagination (pageHowMany) based on the pageSize state
+
+            const categoryParams = selectedCategories.map((cat) => `projectTypes=${encodeURIComponent(cat)}`).join('&'); 
+            // encodeURIComponent is used to ensure that any special characters in the category names are properly encoded for use in a URL; this creates a query string like "projectTypes=Category1&projectTypes=Category2" based on the selected categories
+
+            const response = await fetch(`https://localhost:5000/water/allprojects?pageHowMany=${pageSize}&pageNumber=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`); 
+                // fetch with parameters -> we're using an if/else shorthand to conditionally add the category parameters to the URL only if selectedCategories is not empty; otherwise, just use the base URL with pagination parameters
+
             const data = await response.json(); // parse the response as JSON
             setProjects(data.projects); // set the projects state to the data received from the backend - MUST match the JSON structure (including a lowercase "p" in "projects")
             setTotalProjects(data.totalNumProjects); 
@@ -21,13 +28,12 @@ function ProjectList() {
         };
 
         fetchProjects();
-    }, [pageSize, pageNum, totalProjects]); // this is called the dependency array -> tells useEffect to watch for changes in pageSize, pageNum, & totalProjects, and run fetchProjects whenever either state changes  
-                                            // this is important for pagination, as it allows the component to fetch new data whenever the user changes the page or the number of results per page
+    }, [pageSize, pageNum, totalProjects, selectedCategories]); 
+        // this is called the dependency array -> tells useEffect to watch for changes in pageSize, pageNum, & totalProjects, and run fetchProjects whenever either state changes  
+        // this is important for pagination, as it allows the component to fetch new data whenever the user changes the page or the number of results per page
 
     return (
         <>
-            <h1>Water Projects</h1>
-            <br />
             {projects.map((p) => (
                 <div id="projectCard" className="card" key={p.projectId}>
                     <h3 className="card-title">{p.projectName}</h3>
