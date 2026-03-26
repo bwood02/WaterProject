@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import type { Project } from "./types/Project";
+import type { Project } from "../types/Project";
+import { useNavigate } from "react-router-dom";
 
 function ProjectList({ selectedCategories }: { selectedCategories: string[] }) 
 // ProjectList receives the selectedCategories state as a prop from the App component; it uses this state to filter the projects
@@ -11,6 +12,7 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] })
     const [pageNum, setPageNum] = useState<number>(1); // state for the current page number, with an initial value of 1
     const [totalProjects, setTotalProjects] = useState<number>(0); 
     const [totalPages, setTotalPages] = useState<number>(0);
+    const navigate = useNavigate(); // hook from react-router-dom that allows us to programmatically navigate to different routes in our application
 
     useEffect(() => { // useEffect fetches data when the page is built
         const fetchProjects = async () => {
@@ -39,12 +41,35 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] })
                     <h3 className="card-title">{p.projectName}</h3>
                     <div className="card-body">
                     <ul className="list-unstyled">
-                        <li><strong>Project Type:</strong> {p.projectType}</li>
-                        <li><strong>Regional Program:</strong> {p.projectRegionalProgram}</li>
-                        <li><strong>Impact:</strong> {p.projectImpact} Individuals Served</li>
-                        <li><strong>Phase:</strong> {p.projectPhase}</li>
-                        <li><strong>Project Status:</strong> {p.projectFunctionalityStatus}</li>
+                        <li>
+                          <strong>Project Type: </strong> 
+                          {p.projectType}
+                        </li>
+                        <li>
+                          <strong>Regional Program: </strong> 
+                          {p.projectRegionalProgram}
+                        </li>
+                        <li>
+                          <strong>Impact: </strong> 
+                          {p.projectImpact} Individuals Served
+                        </li>
+                        <li>
+                          <strong>Phase: </strong> 
+                          {p.projectPhase}
+                        </li>
+                        <li>
+                          <strong>Project Status: </strong>  
+                          {p.projectFunctionalityStatus}
+                        </li>
                     </ul>
+
+                    <button 
+                      className="btn btn-success" 
+                      onClick={() => navigate(`/donate/${p.projectName}/${p.projectId}`)}
+                    >
+                      Donate
+                    </button>
+                    {/* when the "Donate" button is clicked, use the navigate function to programmatically navigate to the "/donate" route, which will render the DonatePage component */}
                     </div>
                 </div>
             ))}
