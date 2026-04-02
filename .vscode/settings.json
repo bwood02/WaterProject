@@ -15,5 +15,7 @@
   },
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "appService.defaultWebAppToDeploy": "/subscriptions/bbf67c36-b819-4226-861e-d9584d196c08/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/WaterProject-Wood-Backend",
+  "appService.deploySubpath": "backend\\WaterProject.API\\publish"
 }

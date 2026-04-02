@@ -7,7 +7,7 @@ interface FetchProjectsResponse {
   totalNumProjects: number;
 }
 
-const API_URL = 'https://localhost:5000/water'; // base URL for the API endpoint to fetch projects; this should match the URL defined in the backend controller
+const API_URL = 'https://waterproject-wood-backend-b0f0g2gtf9hsgfeu.centralus-01.azurewebsites.net/water'; // base URL for the API endpoint to fetch projects; this should match the URL defined in the backend controller
 
 export const fetchProjects = async (
   pageSize: number,
