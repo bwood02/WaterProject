@@ -24,7 +24,7 @@ namespace WaterProject.API.Controllers
 
             if (projectTypes != null && projectTypes.Any())
             {
-                query = query.Where(p => projectTypes.Contains(p.ProjectType)); // filter the projects based on the provided project types
+                query = query.Where(p => p.ProjectType != null && projectTypes.Contains(p.ProjectType)); // filter the projects based on the provided project types
             }
 
             var totalNumProjects = query.Count();
