@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using WaterProject.API.Data;
 
+// HERE CONTAINS ALL OF OUR API ENDPOINTS FOR MANAGING WATER PROJECTS (CRUD OPERATIONS)
+
 namespace WaterProject.API.Controllers
 {
     [Route("[controller]")] // the web path to access this controller will be "/water"
@@ -22,7 +24,7 @@ namespace WaterProject.API.Controllers
 
             if (projectTypes != null && projectTypes.Any())
             {
-                query = query.Where(p => projectTypes.Contains(p.ProjectType)); // filter the projects based on the provided project types
+                query = query.Where(p => p.ProjectType != null && projectTypes.Contains(p.ProjectType)); // filter the projects based on the provided project types
             }
 
             var totalNumProjects = query.Count();
@@ -53,6 +55,54 @@ namespace WaterProject.API.Controllers
             return Ok(projectTypes); // return the list of distinct project types in an HTTP response (JSON) with a status code 200
         }
 
-        
+        [HttpPost("AddProject")] // 
+        public IActionResult AddProject([FromBody] Project newProject) 
+        // FromBody means the project data will be sent in the body of the HTTP request as JSON and will be deserialized into a Project object
+        {
+            _waterContext.Projects.Add(newProject); // add the new project to the database context
+            _waterContext.SaveChanges(); // save the changes to the database
+
+            return Ok(newProject); 
+        }
+
+        [HttpPut("UpdateProject/{projectId}")] // called with "/water/UpdateProject/{projectId}" endpoint with a PUT request, where {projectId} is the ID of the project to update
+        public IActionResult UpdateProject(int projectId, [FromBody] Project updatedProject)
+        {
+            var existingProject = _waterContext.Projects.Find(projectId); // find the existing project in the database by its ID
+
+            if (existingProject == null) // if the project doesn't exist, return a 404 Not Found response
+            {
+                return NotFound(new {message = "Project not found"}); 
+            }
+
+            // update the properties of the existing project with the values from the updated project
+            existingProject.ProjectName = updatedProject.ProjectName;
+            existingProject.ProjectType = updatedProject.ProjectType;
+            existingProject.ProjectRegionalProgram = updatedProject.ProjectRegionalProgram;
+            existingProject.ProjectImpact = updatedProject.ProjectImpact;
+            existingProject.ProjectPhase = updatedProject.ProjectPhase;
+            existingProject.ProjectFunctionalityStatus = updatedProject.ProjectFunctionalityStatus;
+
+            _waterContext.Update(existingProject);
+            _waterContext.SaveChanges(); // save the changes to the database
+
+            return Ok(existingProject);
+        }
+
+        [HttpDelete("DeleteProject/{projectId}")] // called with "/water/DeleteProject/{projectId}" endpoint with a DELETE request, where {projectId} is the ID of the project to delete
+        public IActionResult DeleteProject(int projectId)
+        {
+            var project = _waterContext.Projects.Find(projectId); // find the existing project in the database by its ID
+
+            if (project == null) 
+            {
+                return NotFound(new {message = "Project not found"}); // return a JSON response with a message property
+            }
+
+            _waterContext.Projects.Remove(project); // remove the project from the database context
+            _waterContext.SaveChanges(); 
+
+            return NoContent(); // NoContent indicates success with a status code of 204 and no response body
+        }
     }
 }

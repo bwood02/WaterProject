@@ -1,5 +1,6 @@
 import './App.css';
 import { CartProvider } from './context/CartContext';
+import AdminProjectsPage from './pages/AdminProjectsPage';
 import CartPage from './pages/CartPage';
 import DonatePage from './pages/DonatePage';
 import ProjectsPage from './pages/ProjectsPage';
@@ -19,6 +20,7 @@ function App() {
             {/* ':' means that projectName is an optional parameter that can be accessed in the DonatePage component using the useParams hook; 
               this allows us to dynamically render the project name on the DonatePage based on which project's "Donate" button was clicked */}
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/adminprojects" element={<AdminProjectsPage />} />
           </Routes>
         </Router>
       </CartProvider>
