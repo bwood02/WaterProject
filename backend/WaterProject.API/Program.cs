@@ -17,7 +17,10 @@ builder.Services.AddCors(options =>
   options.AddPolicy("AllowReactAppBlah",
   policy =>
   {
-    policy.WithOrigins("http://localhost:3000") // allow requests from the React app running on localhost:3000
+      policy.WithOrigins(
+        "http://localhost:3000",
+        "https://agreeable-pebble-0a2bd0110.1.azurestaticapps.net"
+      ) // allow requests from local React and deployed Static Web App
           .AllowAnyHeader() // allow any HTTP headers in the request
           .AllowAnyMethod(); // allow any HTTP methods (GET, POST, etc.) in the request
   })); // add CORS services to the container
