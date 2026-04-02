@@ -7,7 +7,8 @@ interface FetchProjectsResponse {
   totalNumProjects: number;
 }
 
-const API_URL = 'https://waterproject-wood-backend-b0f0g2gtf9hsgfeu.centralus-01.azurewebsites.net/water'; // base URL for the API endpoint to fetch projects; this should match the URL defined in the backend controller
+const API_URL =
+  'https://waterproject-wood-backend-b0f0g2gtf9hsgfeu.centralus-01.azurewebsites.net/water'; // base URL for the API endpoint to fetch projects; this should match the URL defined in the backend controller
 
 export const fetchProjects = async (
   pageSize: number,
@@ -38,43 +39,47 @@ export const fetchProjects = async (
 };
 
 // function to add a new project by sending a POST request to the backend API with the project data in the request body
-export const addProject = async (newProject: Project): Promise<Project> => { // Promise that there will be a Project object returned from the API after adding the new project (since it's asynchronous)
+export const addProject = async (newProject: Project): Promise<Project> => {
+  // Promise that there will be a Project object returned from the API after adding the new project (since it's asynchronous)
   try {
-      const response = await fetch(`${API_URL}/AddProject`, {
-        method: 'POST', // HTTP method for creating a new resource
-        headers: {
-          'Content-Type': 'application/json', // specify that the request body will be JSON
-        },
-        body: JSON.stringify(newProject), // convert the newProject object to a JSON string to send in the request body
-      });
+    const response = await fetch(`${API_URL}/AddProject`, {
+      method: 'POST', // HTTP method for creating a new resource
+      headers: {
+        'Content-Type': 'application/json', // specify that the request body will be JSON
+      },
+      body: JSON.stringify(newProject), // convert the newProject object to a JSON string to send in the request body
+    });
 
-      if (!response.ok) {
-        throw new Error('Failed to add project'); // throw an error if the response is not ok
-      }
-
-        return await response.json();
-      } catch (error) {
-        console.error('Error adding project:', error);
-        throw error; // re-throw the error to be handled by the caller
+    if (!response.ok) {
+      throw new Error('Failed to add project'); // throw an error if the response is not ok
     }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error adding project:', error);
+    throw error; // re-throw the error to be handled by the caller
+  }
 };
 
-export const updateProject = async (projectId: number, updatedProject: Project): Promise<Project> => {
+export const updateProject = async (
+  projectId: number,
+  updatedProject: Project
+): Promise<Project> => {
   try {
-      const response = await fetch(`${API_URL}/UpdateProject/${projectId}`, {
-        method: 'PUT', // HTTP method for updating an existing resource
-        headers: {
-          'Content-Type': 'application/json', // specify that the request body will be JSON
-        },
-        body: JSON.stringify(updatedProject), // convert the updatedProject object to a JSON string to send in the request body
-      });    
+    const response = await fetch(`${API_URL}/UpdateProject/${projectId}`, {
+      method: 'PUT', // HTTP method for updating an existing resource
+      headers: {
+        'Content-Type': 'application/json', // specify that the request body will be JSON
+      },
+      body: JSON.stringify(updatedProject), // convert the updatedProject object to a JSON string to send in the request body
+    });
 
-      return await response.json();
+    return await response.json();
   } catch (error) {
     console.error('Error updating project:', error);
     throw error; // re-throw the error to be handled by the caller
   }
-}
+};
 
 export const deleteProject = async (projectId: number): Promise<void> => {
   try {
@@ -84,10 +89,9 @@ export const deleteProject = async (projectId: number): Promise<void> => {
 
     if (!response.ok) {
       throw new Error('Failed to delete project'); // throw an error if the response is not ok
-    } 
-  } catch (error) {
-      console.error('Error deleting project:', error);
-      throw error; // re-throw the error to be handled by the caller
     }
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    throw error; // re-throw the error to be handled by the caller
+  }
 };
-

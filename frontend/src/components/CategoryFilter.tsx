@@ -11,7 +11,7 @@ function CategoryFilter (
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch(`https://localhost:5000/Water/GetProjectTypes`); 
+                const response = await fetch(`https://waterproject-wood-backend-b0f0g2gtf9hsgfeu.centralus-01.azurewebsites.net/water/getprojecttypes`); 
                 const data = await response.json(); 
                 console.log("Fetched categories:", data); // log the fetched categories to the console for debugging purposes
                 setCategories(data); // set the categories state to the data received from the backend
